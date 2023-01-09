@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr/en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+    <script src="js/script.js"></script>
+    <title>Loading</title>
+</head>
+  <body class="loading" onload="">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <h3>
+        Loading
+      </h3>
+    <!-- Redirect to the french page -->
+    <script>
+      //when Loaded apear in console redirecting to french page
+      window.onload = function() {
+        //change the text
+        document.getElementsByTagName("h3")[0].innerHTML = "Loaded !";
+        setInterval(function() {
+          window.location.href = "html/fr/index.html";
+        }, 2000);
+      };
+    </script>
+  </body>
+</html>
