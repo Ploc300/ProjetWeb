@@ -280,11 +280,17 @@ a:hover {
     color: #ffffff;
 }
 
+.content {
+    height: 100vh;
+}
+
 div.card {
     background-color: var(--sub1-background-color);
     border-radius: 0px;
     width: 100%;
     padding: 2%;
+    margin: 2%;
+    border-radius: 10px;
 }
 
 .card > img, .card > div {
@@ -304,21 +310,32 @@ sup {
     background-color: inherit;
 }
 
-.card-2 {
+.card-1 {
     top: 10vh;
+    height: 70vh;
+}
+
+.card-2 {
+    top: 15vh;
+    height: 70vh;
 }
 
 .card-3 {
     top: 20vh;
+    height: 70vh;
 }
 
-
+.card-3 > .card-text {
+    height: 100%;
+}
 
 .contact {
     position: relative;
     bottom: 0;
     text-align: right;
 }
+
+
 
 .contact-btn {
     background-color: var(--main-color);
@@ -327,6 +344,7 @@ sup {
 
 .contact-btn:hover {
     background-color: var(--main-color-hover);
+    color: #ffffff;
 }
 
 .hover-mouse {
