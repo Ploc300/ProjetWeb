@@ -8,9 +8,20 @@
     --main-color-active: #21272e;
     --main-color-acent: #33383d;
     --background-color: #2b2e31;
+    --sub1-color: #1c5d99;
+    --sub1-color-hover: none;
+    --sub1-color-active: none;
+    --sub1-color-acent: none;
+    --sub1-background-color: none;
     --sub2-color: #3f5e68;
     --sub2-color-hover: #334d55;
+    --sub2-color-active: none;
+    --sub2-color-acent: none;
     --sub2-background-color: #253c44;
+    --sub3-color: #bbcde5;
+    --sub3-color-hover: none;
+    --sub3-color-active: none;
+    --sub3-color-acent: none;
 }
 
 * {
@@ -169,7 +180,7 @@ nav,
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: (50%, 50%);
+    transform: translate(50%, 50%);
     background-color: var(--background-color);
     text-align: center;
 }
@@ -247,7 +258,7 @@ a:hover {
     border-color: var(--main-color-hover);
 }
 
-.btn-language>a>svg {
+.bi-globe-americas {
     /* button hover: change the background color and the text color */
     color: var(--white);
 }
