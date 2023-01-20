@@ -561,6 +561,10 @@ button {
     cursor: pointer;
 }
 
+.thanks {
+    font-size: 0.75em;
+}
+
 footer>p {
     color: var(--white);
     bottom: 0;
