@@ -35,6 +35,10 @@ function FormulaireModification($id)
     echo "<input type='text' class='form-control' value='" . $note['Coefficient'] . "' name='coeff' id='coeff' placeholder='Coefficient' min='0' max='5'>";
     echo "</div class='form-group'>";
     echo "<div class='form-group'>";
+    echo '<input class=\'form-control\' type="text" name="captcha" />';
+    echo '<img src="image.php" onclick="this.src=\'image.php?\' + Math.random();" alt="captcha" style="cursor:pointer;">';
+    echo "</div>";
+    echo "<div class='form-group'>";
     echo "<button type='submit' class='btn btn-dark'>Modifier</button>";
     echo "</div>";
 

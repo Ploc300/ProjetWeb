@@ -41,10 +41,17 @@ include "functions.php";
             <li></li>
             <li></li>
         </ul>
+
     </header>
 
     <main>
         <?php
+        if (isset($_GET['login'])) {
+            if ($_GET['login'] == "error") {
+                echo '<div class="container-fluid d-flex justify-content-center align-items-center"><div class="alert alert-danger" role="alert">Erreur de connexion</div></div>';
+            }
+        }
+
         if (isset($_GET['action'])) {
             if ($_GET['action'] == "logout") {
                 session_destroy();

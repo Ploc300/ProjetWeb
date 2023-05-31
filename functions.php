@@ -143,7 +143,11 @@ function afficheNotes($notes)
 {
     $matieres = getMatieres();
     $types = getTypeNotes();
-    echo '<table class="table table-light table-striped table-hover table-bordered border-dark-subtle table-sm"><thead><tr><th>Matière</th><th>Type</th><th>Note</th><th>Coefficient</th><th>Séléctioner</th></tr></thead><tbody class="table-group-divider">';
+    echo '<table class="table table-light table-striped table-hover table-bordered border-dark-subtle table-sm"><thead><tr><th>Matière</th><th>Type</th><th>Note</th><th>Coefficient</th>';
+    if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
+        echo '<th>Séléctioner</th>';
+    }
+    echo '</tr></thead><tbody class="table-group-divider">';
     foreach ($notes as $note) {
         foreach ($matieres as $matiere) {
             foreach ($types as $type) {
@@ -159,8 +163,11 @@ function afficheNotes($notes)
             }
         }
     }
-
-    echo '</tbody><tfoot class="table-group-divider"><tr><th>Matière</th><th>Type</th><th>Note</th><th>Coefficient</th><th>Séléctioner</th></tr></tfoot></table>';
+    echo '</tbody><tfoot class="table-group-divider"><tr><th>Matière</th><th>Type</th><th>Note</th><th>Coefficient</th>';
+    if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
+        echo '<th>Séléctioner</th>';
+    }
+    echo '</tr></tfoot></table>';
 }
 
 # Fonction de recuperation des notes =============================================================================
@@ -229,7 +236,8 @@ function getNotesByType($notes, $type)
     return $resultat;
 }
 
-function getNoteById($id) {
+function getNoteById($id)
+{
     $note = false;
     try {
         // Connection to the database
@@ -287,14 +295,14 @@ function getMoyenneByEtu($login)
 
 # Modification de la base =============================================================================
 
-function modificationNote($id, $matiere, $type, $note, $coefficient) {
+function modificationNote($id, $matiere, $type, $note, $coefficient)
+{
     $resultat = false;
     try {
         $db = new PDO('sqlite:db/db.sqlite');
         $rq = 'UPDATE NotesMatieres SET noMat = ' . $matiere . ', noNote = ' . $type . ', note = ' . $note . ', Coefficient = ' . $coefficient . ' WHERE id = ' . $id;
         $resultat = $db->exec($rq);
-    }
-    catch (Exception $e) {
+    } catch (Exception $e) {
         echo "erreur de connection a la BDO";
     }
     return $resultat;
@@ -320,6 +328,6 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     if (authentification($_POST['email'], $_POST['password'])) {
         header('Location: index.php');
     } else {
-        header('Location: connexion.php');
+        header('Location: connexion.php?login=error');
     }
 }

@@ -16,6 +16,7 @@ noProfRedirect()
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://www.google.com/recaptcha/api.js?render=6LdgyFQmAAAAAAtMIIaC-UvQjARb2IEcdNw6qrPq"></script>
 </head>
 
 <body>
@@ -59,15 +60,15 @@ noProfRedirect()
             <?php
             if (isset($_GET['id'])) {
                 ?>
-                <form action="modification.php" class="text-center p-3" method="post">
+                <form action="modification.php?action=modif" class="text-center p-3" method="post">
                     <?php
                     FormulaireModification($_GET['id']);
                     ?>
                 </form>
                 <?php
             }
-            if (isset($_GET['action'])) {
-                if ($_GET['action'] == "modif") {
+            if (isset($_GET["action"]) && isset($_POST['captcha'])) {
+                if (($_GET['action'] == "modif" && ($_POST['captcha'] == $_SESSION['code']))) {
                     if (isset($_POST['id']) && isset($_POST['login']) && isset($_POST['matiere']) && isset($_POST['type']) && isset($_POST['note']) && isset($_POST['coeff'])) {
                         if (modificationNote($_POST['id'], $_POST['matiere'], $_POST['type'], $_POST['note'], $_POST['coeff'])) {
                             echo "<div class='alert alert-success' role='alert'>La note a bien été modifiée</div>";
@@ -75,6 +76,9 @@ noProfRedirect()
                             echo "<div class='alert alert-danger' role='alert'>La note n'a pas pu être modifiée</div>";
                         }
                     }
+                }
+                else {
+                    echo "<div class='alert alert-danger' role='alert'>Le captcha est incorrect</div>";
                 }
             }
             ?>

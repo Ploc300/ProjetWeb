@@ -81,6 +81,33 @@ table td {
     color: transparent;
 }
 
+::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(33,37,41,1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bs-gray-600);
+    border-radius: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bs-gray-500);
+}
+
+.alert {
+    max-width: 30%;
+    text-align: center;
+    margin: 1rem auto;
+}
+
+
+
 
 
 
