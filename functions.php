@@ -153,7 +153,7 @@ function afficheNotes($notes)
     $types = getTypeNotes();
     echo '<table class="table table-light table-striped table-hover table-bordered border-dark-subtle table-sm"><thead><tr><th>Matière</th><th>Type</th><th>Note</th><th>Coefficient</th>';
     if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
-        echo '<th>Séléctioner</th>';
+        echo '<th>Etudiant</th><th>Séléctioner</th>';
     }
     echo '</tr></thead><tbody class="table-group-divider">';
     foreach ($notes as $note) {
@@ -162,7 +162,7 @@ function afficheNotes($notes)
                 if ($note['noMat'] == $matiere['NoMat']) {
                     if ($note['noNote'] == $type['NoNote']) {
                         if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
-                            echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td><a href="modification.php?id=' . $note['id'] . '"><img src="assets/icons/select.png" alt="Séléctioner" class="select"></a></td></tr>';
+                            echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>'. $note['login'].'</td><td><a href="modification.php?id=' . $note['id'] . '"><img src="assets/icons/select.png" alt="Séléctioner" class="select"></a></td></tr>';
                         } else {
                             echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td></tr>';
                         }
@@ -173,7 +173,7 @@ function afficheNotes($notes)
     }
     echo '</tbody><tfoot class="table-group-divider"><tr><th>Matière</th><th>Type</th><th>Note</th><th>Coefficient</th>';
     if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
-        echo '<th>Séléctioner</th>';
+        echo '<th>Etudiant</th><th>Séléctioner</th>';
     }
     echo '</tr></tfoot></table>';
 }
