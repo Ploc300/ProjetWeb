@@ -20,9 +20,18 @@ noProfRedirect();
 <body>
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand">
-                <img src="assets/icons/logo.png" alt="GradeUp Logo" class="d-inline-block align-text-top">
-                GradeUp
+        <a class="navbar-brand">
+                <div>
+                    <img src="assets/icons/logo.png" alt="GradeUp Logo" class="d-inline-block align-text-top">
+                    GradeUp
+                </div>
+                <div class="profile">
+                    <img src="<?php echo getProfilePicture($_SESSION['uLogin']); ?>" alt="Profile Icon"
+                        class="d-inline-block align-text-top">
+                    <?php
+                    echo ucfirst(explode('@', $_SESSION['uLogin'])[0]);
+                    ?>
+                </div>
             </a>
             <div class="" id="navbarNav">
                 <ul class="nav justify-content-center">

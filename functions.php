@@ -71,6 +71,14 @@ function menu()
     }
 }
 
+function getProfilePicture($etu) {
+    $db = new PDO('sqlite:db/db.sqlite');
+    $rq = 'SELECT profilepicture FROM Comptes WHERE (login = "' . $etu . '")';
+    $resultat = $db->query($rq);
+    $resultat = $resultat->fetch(PDO::FETCH_ASSOC);
+    return $resultat['profilepicture'];
+}
+
 function connexion()
 {
     echo '<div class="form-container">

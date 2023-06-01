@@ -21,8 +21,17 @@ noProfRedirect();
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand">
-                <img src="assets/icons/logo.png" alt="GradeUp Logo" class="d-inline-block align-text-top">
-                GradeUp
+                <div>
+                    <img src="assets/icons/logo.png" alt="GradeUp Logo" class="d-inline-block align-text-top">
+                    GradeUp
+                </div>
+                <div class="profile">
+                    <img src="<?php echo getProfilePicture($_SESSION['uLogin']); ?>" alt="Profile Icon"
+                        class="d-inline-block align-text-top">
+                    <?php
+                    echo ucfirst(explode('@', $_SESSION['uLogin'])[0]);
+                    ?>
+                </div>
             </a>
             <div class="" id="navbarNav">
                 <ul class="nav justify-content-center">
@@ -36,7 +45,7 @@ noProfRedirect();
 
 
     <header>
-    <ul class="background">
+        <ul class="background">
             <li></li>
             <li></li>
             <li></li>
@@ -49,15 +58,15 @@ noProfRedirect();
     </header>
 
     <main>
-        
+
     </main>
 
     <footer class="footer fixed-bottom bg-dark light-text">
         <p class="var_dump">
             <?php
-            
+
             ?>
-        </p>        
+        </p>
         <div class="container text-center">
             <span>Alexis PENCRANE - Noann LOSSER | 2023 | All right reserved &copy</span>
         </div>

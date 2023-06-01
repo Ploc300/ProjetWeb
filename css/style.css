@@ -53,6 +53,10 @@ nav li img {
     filter: grayscale(100%) invert(100%);
 }
 
+nav li img:hover {
+    filter: grayscale(0%) invert(50%);
+}
+
 .var_dump {
     color: red;
 }
@@ -88,7 +92,7 @@ table td {
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(33,37,41,1);
+    background: rgba(33, 37, 41, 1);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -104,6 +108,10 @@ table td {
     max-width: 30%;
     text-align: center;
     margin: 1rem auto;
+}
+
+div.profile img {
+    filter: grayscale(0%) invert(100%);
 }
 
 
