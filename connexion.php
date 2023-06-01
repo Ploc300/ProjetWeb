@@ -74,7 +74,7 @@ include "functions.php";
             <span>Compte de test: admin@iut.fr:admin prof1@iut.fr:prof1 etu1@iut.fr:etu1</span>
         </p>
         <div class="container text-center">
-            <span>Alexis PENCRANE - Noann LOSSER | 2023 | All right reserved &copy</span>
+            <span>Alexis PENCRANE - Noann LOSSER | 2023 | All right reserved &copy;</span>
         </div>
     </footer>
 

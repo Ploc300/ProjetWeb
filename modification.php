@@ -22,7 +22,7 @@ noProfRedirect()
 <body>
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-        <a class="navbar-brand">
+            <a class="navbar-brand">
                 <div>
                     <img src="assets/icons/logo.png" alt="GradeUp Logo" class="d-inline-block align-text-top">
                     GradeUp
@@ -78,15 +78,14 @@ noProfRedirect()
             }
             if (isset($_GET["action"]) && isset($_POST['captcha'])) {
                 if (($_GET['action'] == "modif" && ($_POST['captcha'] == $_SESSION['code']))) {
-                    if (isset($_POST['id']) && isset($_POST['login']) && isset($_POST['matiere']) && isset($_POST['type']) && isset($_POST['note']) && isset($_POST['coeff'])) {
-                        if (modificationNote($_POST['id'], $_POST['matiere'], $_POST['type'], $_POST['note'], $_POST['coeff'])) {
+                    if (isset($_POST['id_modif']) && isset($_POST['login_modif']) && isset($_POST['matiere_modif']) && isset($_POST['type_modif']) && isset($_POST['note']) && isset($_POST['coeff'])) {
+                        if (modificationNote($_POST['id_modif'], $_POST['matiere_modif'], $_POST['type_modif'], $_POST['note'], $_POST['coeff'])) {
                             echo "<div class='alert alert-success' role='alert'>La note a bien été modifiée</div>";
                         } else {
                             echo "<div class='alert alert-danger' role='alert'>La note n'a pas pu être modifiée</div>";
                         }
                     }
-                }
-                else {
+                } else {
                     echo "<div class='alert alert-danger' role='alert'>Le captcha est incorrect</div>";
                 }
             }
@@ -139,7 +138,7 @@ noProfRedirect()
             ?>
         </p>
         <div class="container text-center">
-            <span>Alexis PENCRANE - Noann LOSSER | 2023 | All right reserved &copy</span>
+            <span>Alexis PENCRANE - Noann LOSSER | 2023 | All right reserved &copy;</span>
         </div>
     </footer>
 
@@ -147,9 +146,10 @@ noProfRedirect()
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
+    <script>
+        document.getElementById("under-footer").style.height = document.getElementById("footer").offsetHeight + "px";
+    </script>
 </body>
-<script>
-    document.getElementById("under-footer").style.height = document.getElementById("footer").offsetHeight + "px";
-</script>
+
 
 </html>
