@@ -51,7 +51,6 @@ noSessionRedirect();
             <li></li>
             <li></li>
         </ul>
-        <h2>Bienvenue sur GradeUp</h2>
     </header>
 
     <main>
@@ -66,6 +65,9 @@ noSessionRedirect();
             echo "</div>";
         }
         ?>
+        <ul class="indexAnim">
+            <li>GradeUP!</li>
+        </ul>
         <div id="under-footer"> </div>
     </main>
 

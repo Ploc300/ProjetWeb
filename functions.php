@@ -71,12 +71,19 @@ function menu()
     }
 }
 
-function getProfilePicture($etu) {
-    $db = new PDO('sqlite:db/db.sqlite');
-    $rq = 'SELECT profilepicture FROM Comptes WHERE (login = "' . $etu . '")';
-    $resultat = $db->query($rq);
-    $resultat = $resultat->fetch(PDO::FETCH_ASSOC);
-    return $resultat['profilepicture'];
+function getProfilePicture($etu)
+{
+    $resultat = false;
+    try {
+        $db = new PDO('sqlite:db/db.sqlite');
+        $rq = 'SELECT profilepicture FROM Comptes WHERE (login = "' . $etu . '")';
+        $resultat = $db->query($rq);
+        $resultat = $resultat->fetch(PDO::FETCH_ASSOC);
+        $resultat = $resultat['profilepicture'];
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    return $resultat;
 }
 
 function connexion()
@@ -145,7 +152,7 @@ function authentification($login, $pass)
     return $retour;
 }
 
-# Fonction d'affichage des notes =============================================================================
+# Fonction d'affichage =============================================================================
 
 function afficheNotes($notes)
 {
@@ -162,7 +169,7 @@ function afficheNotes($notes)
                 if ($note['noMat'] == $matiere['NoMat']) {
                     if ($note['noNote'] == $type['NoNote']) {
                         if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
-                            echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>'. $note['login'].'</td><td><a href="modification.php?id=' . $note['id'] . '"><img src="assets/icons/select.png" alt="Séléctioner" class="select"></a></td></tr>';
+                            echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>' . $note['login'] . '</td><td><a href="modification.php?id=' . $note['id'] . '"><img src="assets/icons/select.png" alt="Séléctioner" class="select"></a></td></tr>';
                         } else {
                             echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td></tr>';
                         }
@@ -178,8 +185,37 @@ function afficheNotes($notes)
     echo '</tr></tfoot></table>';
 }
 
-# Fonction de recuperation des notes =============================================================================
+function afficheUsers()
+{
+    $user = getAllUsers();
+    //login, motdepasse, statut
+    echo '<div class="container ">';
+    echo '<table class="table table-light table-striped table-hover table-bordered border-dark-subtle table-sm"><thead><tr><th>Login</th><th>Mot de passe</th><th>Statut</th></tr></thead><tbody class="table-group-divider">';
+    foreach ($user as $u) {
+        echo '<tr><td>' . $u['login'] . '</td><td>' . $u['motdepasse'] . '</td><td>' . $u['statut'] . '</td></tr>';
+    }
+    echo '</tbody><tfoot class="table-group-divider"><tr><th>Login</th><th>Mot de passe</th><th>Statut</th></tr></tfoot></table>';
+    echo "<div class='text-center'><a href='administration.php' class='btn btn-dark'>Retour</a></div>";
+    echo '</div>';
+}
 
+# Fonction de recuperation =============================================================================
+
+function getAllUsers()
+{
+    $users = false;
+
+    try {
+        // Connection to the database
+        $db = new PDO('sqlite:db/db.sqlite');
+        $rq = 'SELECT * FROM Comptes';
+        $resultat = $db->query($rq);
+        $users = $resultat->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        echo "erreur de connection a la BDO";
+    }
+    return $users;
+}
 function getAllNotes()
 {
     $notes = false;
@@ -309,6 +345,45 @@ function modificationNote($id, $matiere, $type, $note, $coefficient)
     try {
         $db = new PDO('sqlite:db/db.sqlite');
         $rq = 'UPDATE NotesMatieres SET noMat = ' . $matiere . ', noNote = ' . $type . ', note = ' . $note . ', Coefficient = ' . $coefficient . ' WHERE id = ' . $id;
+        $resultat = $db->exec($rq);
+    } catch (Exception $e) {
+        echo "erreur de connection a la BDO";
+    }
+    return $resultat;
+}
+
+function ajoutCompte($login, $pass, $statut, $profilepicture)
+{
+    $resultat = false;
+    try {
+        $db = new PDO('sqlite:db/db.sqlite');
+        $rq = 'INSERT INTO Comptes (login, motdepasse, statut, profilepicture) VALUES ("' . $login . '", "' . $pass . '", "' . $statut . '", "' . $profilepicture . '")';
+        $resultat = $db->exec($rq);
+    } catch (Exception $e) {
+        echo "erreur de connection a la BDO";
+    }
+    return $resultat;
+}
+
+function supressionCompte($login)
+{
+    $resultat = false;
+    try {
+        $db = new PDO('sqlite:db/db.sqlite');
+        $rq = 'DELETE FROM Comptes WHERE login = "' . $login . '"';
+        $resultat = $db->exec($rq);
+    } catch (Exception $e) {
+        echo "erreur de connection a la BDO";
+    }
+    return $resultat;
+}
+
+function modificationCompte($login, $pass, $statut, $profilepicture)
+{
+    $resultat = false;
+    try {
+        $db = new PDO('sqlite:db/db.sqlite');
+        $rq = 'UPDATE Comptes SET motdepasse = "' . $pass . '", statut = "' . $statut . '", profilepicture = "' . $profilepicture . '" WHERE login = "' . $login . '"';
         $resultat = $db->exec($rq);
     } catch (Exception $e) {
         echo "erreur de connection a la BDO";

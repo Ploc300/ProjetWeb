@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "functions.php";
+include "formulaires.php";
 noSessionRedirect();
 noAdminRedirect();
 ?>
@@ -20,7 +21,7 @@ noAdminRedirect();
 <body>
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-        <a class="navbar-brand">
+            <a class="navbar-brand">
                 <div>
                     <img src="assets/icons/logo.png" alt="GradeUp Logo" class="d-inline-block align-text-top">
                     GradeUp
@@ -58,13 +59,91 @@ noAdminRedirect();
     </header>
 
     <main>
+        <?php
+        if (isset($_GET['action'])) {
+            switch ($_GET['action']) {
+                case 'ajout':
+                    formulaireAjoutAdmin();
+                    break;
+                case 'supression':
+                    formulaireSupressionAdmin();
+                    break;
+                case 'modification':
+                    formulaireModificationAdmin();
+                    break;
+                case 'afficher':
+                    afficheUsers();
+                    break;
+            }
+        } else if (isset($_POST['action'])) {
+            switch ($_POST['action']) {
+                case 'ajout':
+                    if (preg_match('/^assets\/profilepicture\/.*\.png$/', $_POST['profilepicture'])) {
+                        if ($_POST['captcha'] == $_SESSION['code']) {
+                            if (in_array($_POST['statut'], ['administrateur', 'professeur', 'utilisateur'])) {
+                                if (ajoutCompte($_POST['login'], $_POST['password'], $_POST['statut'], $_POST['profilepicture'])) {
+                                    echo "<p class='alert alert-success'>Compte ajouté avec succès</p>";
+                                    afficheUsers();
+                                } else {
+                                    echo "<p class='alert alert-danger'>Erreur lors de l'ajout du compte</p>";
+                                }
+
+                            } else {
+                                echo "<p class='alert alert-danger'>Le statut doit etre \"administateur\", \"professeur\" ou \"utilisateur\"</p>";
+                            }
+                        } else {
+                            echo "<p class='alert alert-danger'>Erreur lors de la vérification du captcha</p>";
+                        }
+                    } else {
+                        echo "<p class='alert alert-danger'>Le lien de l'image doit etre sous la forme \"assets/profilepicture/nomimage.png\"</p>";
+                    }
+                    break;
+                case 'supression':
+                    if ($_POST['captcha'] == $_SESSION['code']) {
+                        if (supressionCompte($_POST['login'])) {
+                            echo "<p class='alert alert-success'>Compte supprimé avec succès</p>";
+                            afficheUsers();
+                        } else {
+                            echo "<p class='alert alert-danger'>Erreur lors de la supression du compte</p>";
+                        }
+                    } else {
+                        echo "<p class='alert alert-danger'>Erreur lors de la vérification du captcha</p>";
+                    }
+                    break;
+                case 'modification':
+                    if (preg_match('/^assets\/profilepicture\/.*\.png$/', $_POST['profilepicture'])) {
+                        if ($_POST['captcha'] == $_SESSION['code']) {
+                            if (in_array($_POST['statut'], ['administrateur', 'professeur', 'utilisateur'])) {
+                                if (modificationCompte($_POST['login'], $_POST['password'], $_POST['statut'], $_POST['profilepicture'])) {
+                                    echo "<p class='alert alert-success'>Compte modifié avec succès</p>";
+                                    afficheUsers();
+                                } else {
+                                    echo "<p class='alert alert-danger'>Erreur lors de la modification du compte</p>";
+                                }
+
+                            } else {
+                                echo "<p class='alert alert-danger'>Le statut doit etre \"administateur\", \"professeur\" ou \"utilisateur\"</p>";
+                            }
+                        } else {
+                            echo "<p class='alert alert-danger'>Erreur lors de la vérification du captcha</p>";
+                        }
+                    } else {
+                        echo "<p class='alert alert-danger'>Le lien de l'image doit etre sous la forme \"assets/profilepicture/nomimage.png\"</p>";
+                    }
+                    break;
+            }
+
+        } else {
+            formulaireChoixAdministation();
+        }
+        ?>
 
     </main>
 
     <footer class="footer fixed-bottom bg-dark light-text">
         <p class="var_dump">
             <?php
-
+            
             ?>
         </p>
         <div class="container text-center">
