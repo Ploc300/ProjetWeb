@@ -2,6 +2,7 @@
 session_start();
 include "functions.php";
 include "formulaires.php";
+include "logsToGraph.php";
 noSessionRedirect();
 noAdminRedirect();
 ?>
@@ -16,6 +17,7 @@ noAdminRedirect();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="js/script.js"></script>
 </head>
 
 <body>
@@ -74,14 +76,24 @@ noAdminRedirect();
                 case 'afficher':
                     afficheUsers();
                     break;
+                case 'uploadImage':
+                    echo '<br>';
+                    formulaireUploadImage();
+                    break;
+                case 'deleteImage':
+                    formulaireDeleteImage();
+                    break;
+                case 'afficherLogs':
+                    afficheGraphsLogs(getLogs());
+                    break;
             }
         } else if (isset($_POST['action'])) {
             switch ($_POST['action']) {
                 case 'ajout':
-                    if (preg_match('/^assets\/profilepicture\/.*\.png$/', $_POST['profilepicture'])) {
+                    if (preg_match('/^assets\/profilepicture\/.*\.png$/', $_POST['image'])) {
                         if ($_POST['captcha'] == $_SESSION['code']) {
                             if (in_array($_POST['statut'], ['administrateur', 'professeur', 'utilisateur'])) {
-                                if (ajoutCompte($_POST['login'], $_POST['password'], $_POST['statut'], $_POST['profilepicture'])) {
+                                if (ajoutCompte($_POST['login'], $_POST['password'], $_POST['statut'], $_POST['image'])) {
                                     echo "<p class='alert alert-success'>Compte ajouté avec succès</p>";
                                     afficheUsers();
                                 } else {
@@ -111,10 +123,10 @@ noAdminRedirect();
                     }
                     break;
                 case 'modification':
-                    if (preg_match('/^assets\/profilepicture\/.*\.png$/', $_POST['profilepicture'])) {
+                    if (preg_match('/^assets\/profilepicture\/.*\.png$/', $_POST['image'])) {
                         if ($_POST['captcha'] == $_SESSION['code']) {
                             if (in_array($_POST['statut'], ['administrateur', 'professeur', 'utilisateur'])) {
-                                if (modificationCompte($_POST['login'], $_POST['password'], $_POST['statut'], $_POST['profilepicture'])) {
+                                if (modificationCompte($_POST['login'], $_POST['password'], $_POST['statut'], $_POST['image'])) {
                                     echo "<p class='alert alert-success'>Compte modifié avec succès</p>";
                                     afficheUsers();
                                 } else {
@@ -131,6 +143,36 @@ noAdminRedirect();
                         echo "<p class='alert alert-danger'>Le lien de l'image doit etre sous la forme \"assets/profilepicture/nomimage.png\"</p>";
                     }
                     break;
+                case 'uploadImage':
+                    if (preg_match('/\.png$/', $_FILES['image']['name'])) {
+                        if ($_POST['captcha'] == $_SESSION['code']) {
+                            if ($name = uploadImage($_FILES['image']['tmp_name'], $_FILES['image']['name'])) {
+                                echo "<p class='alert alert-success'>Image uploadé avec succès sous le nom: ".$name."</p>";
+                            } else {
+                                echo "<p class='alert alert-danger'>Erreur lors de l'upload de l'image</p>";
+                            }
+                        } else {
+                            echo "<p class='alert alert-danger'>Erreur lors de la vérification du captcha</p>";
+                        }
+                    } else {
+                        echo "<p class='alert alert-danger'>L'image doit etre au format PNG</p>";
+                    }
+                    
+                    echo "<div class='text-center'><a href='administration.php' class='btn btn-dark'>Retour</a></div>";
+                    break;
+                case 'deleteImage':
+                    if ($_POST['captcha'] == $_SESSION['code']) {
+                        if (deleteImage($_POST['image'])) {
+                            echo "<p class='alert alert-success'>Image supprimé avec succès</p>";
+                        } else {
+                            echo "<p class='alert alert-danger'>Erreur lors de la supression de l'image</p>";
+                        }
+                    } else {
+                        echo "<p class='alert alert-danger'>Erreur lors de la vérification du captcha</p>";
+                    }
+                    
+                    echo "<div class='text-center'><a href='administration.php' class='btn btn-dark'>Retour</a></div>";
+                    break;
             }
 
         } else {
@@ -143,7 +185,7 @@ noAdminRedirect();
     <footer class="footer fixed-bottom bg-dark light-text">
         <p class="var_dump">
             <?php
-            
+            // var_dump();
             ?>
         </p>
         <div class="container text-center">

@@ -3,6 +3,7 @@ session_start();
 include "functions.php";
 include "formulaires.php";
 noSessionRedirect();
+// Si pas de compte porf/admin on redirige vers la page d'accueil
 noProfRedirect()
     ?>
 <!DOCTYPE html>
@@ -67,6 +68,7 @@ noProfRedirect()
                 </div>
             </div>
             <?php
+            // Si une note a été sélectionnée afficher le formulaire de modification
             if (isset($_GET['id'])) {
                 ?>
                 <form action="modification.php?action=modif" class="text-center p-3" method="post">
@@ -76,9 +78,13 @@ noProfRedirect()
                 </form>
                 <?php
             }
+            // Si le formulaire a été envoyé vérifier toutes les informations
             if (isset($_GET["action"]) && isset($_POST['captcha'])) {
+                // Verification du captcha
                 if (($_GET['action'] == "modif" && ($_POST['captcha'] == $_SESSION['code']))) {
+                    // Verification que toutes les informations sont présentes
                     if (isset($_POST['id_modif']) && isset($_POST['login_modif']) && isset($_POST['matiere_modif']) && isset($_POST['type_modif']) && isset($_POST['note']) && isset($_POST['coeff'])) {
+                        // Si la modification a réussi afficher un message de succès sinon un message d'erreur
                         if (modificationNote($_POST['id_modif'], $_POST['matiere_modif'], $_POST['type_modif'], $_POST['note'], $_POST['coeff'])) {
                             echo "<div class='alert alert-success' role='alert'>La note a bien été modifiée</div>";
                         } else {
@@ -90,6 +96,7 @@ noProfRedirect()
                 }
             }
             ?>
+            <!-- Formulaire de tri pour la sélection des notes -->
             <form action="#" class="text-center p-3">
                 <div class="form-group">
                     <input type="text" class="form-control" value="" name="login" id="login" placeholder="Login">
@@ -117,6 +124,7 @@ noProfRedirect()
                 <button type="submit" class="btn btn-dark">Rechercher</button>
             </form>
             <?php
+            // Affichage dynamique des notes en fonctions des paramètres de tri
             if (isset($_GET['login']) && isset($_GET['matiere']) && isset($_GET['type'])) {
                 $notes = getNotesByEtu(getNotesByMat(getNotesByType(getAllNotes(), $_GET['type']), $_GET['matiere']), $_GET['login']);
                 if (empty($notes)) {
@@ -124,7 +132,7 @@ noProfRedirect()
                 } else {
                     afficheNotes($notes);
                 }
-            } else {
+            } else { // Si aucun paramètre n'est donné afficher toutes les notes
                 afficheNotes(getAllNotes());
             }
             ?>
@@ -134,7 +142,7 @@ noProfRedirect()
     <footer id="footer" class="footer fixed-bottom bg-dark light-text">
         <p class="var_dump">
             <?php
-            
+
             ?>
         </p>
         <div class="container text-center">

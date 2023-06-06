@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "functions.php";
+// Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
 noSessionRedirect();
 ?>
 <!DOCTYPE html>
@@ -24,10 +25,12 @@ noSessionRedirect();
                     <img src="assets/icons/logo.png" alt="GradeUp Logo" class="d-inline-block align-text-top">
                     GradeUp
                 </div>
+                <!-- Affiche le profil de l'utilisateur dans la navbar -->
                 <div class="profile">
                     <img src="<?php echo getProfilePicture($_SESSION['uLogin']); ?>" alt="Profile Icon"
                         class="d-inline-block align-text-top">
                     <?php
+                    // sépare la premiere partie du mail pour afficher le login
                     echo ucfirst(explode('@', $_SESSION['uLogin'])[0]);
                     ?>
                 </div>
@@ -55,24 +58,30 @@ noSessionRedirect();
 
     <main>
         <?php
+        // Affiche le nom de la page
         echo "<h2>Vous êtes sur la page: " . ucfirst(explode('.', basename($_SERVER['PHP_SELF']))[0]) . "</h2>";
-        if ($_SESSION['uRole'] == "administrateur" || $_SESSION['uRole'] == "professeur") {
-        } else {
+        // Si s'ession etudiant alors affiche les notes de l'etudiant
+        if ($_SESSION['uRole'] == "utilisateur") {
             echo "<h4>Voici vos notes</h4>";
             echo "<br><div class='container'>";
             echo "<p>Vous avez une moyenne de " . getMoyenneByEtu($_SESSION['uLogin']) . "</p>";
+            // Recupere toutes les notes de l'etudiant et les affiche
             afficheNotes(getNotesByEtu(getAllNotes(), $_SESSION['uLogin']));
             echo "</div>";
+        } else { // Si session prof/admin affiche le nom de l'apli pour ne pas laisser de vide
+            ?>
+            <ul class="indexAnim">
+                <li>GradeUP!</li>
+            </ul>
+            <?php
         }
         ?>
-        <ul class="indexAnim">
-            <li>GradeUP!</li>
-        </ul>
         <div id="under-footer"> </div>
     </main>
 
     <footer id="footer" class="footer fixed-bottom bg-dark light-text">
         <p class="var_dump">
+            <!-- Zone de test pour ne pas oublier les oublier dans la version finale -->
             <?php
             ?>
         </p>
@@ -86,6 +95,7 @@ noSessionRedirect();
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
     <script>
+        // Permet de fixer le footer en bas de page
         document.getElementById("under-footer").style.height = document.getElementById("footer").offsetHeight + "px";
     </script>
 </body>

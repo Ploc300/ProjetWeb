@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "functions.php";
+include "formulaires.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,6 +17,7 @@ include "functions.php";
 </head>
 
 <body>
+    <!-- Navbar avec boostrap -->
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand">
@@ -25,6 +27,7 @@ include "functions.php";
             <div class="" id="navbarNav">
                 <ul class="nav justify-content-center">
                     <?php
+                    // Affichage d'un menu dynamique en fonction de la session (avec bootsrap)
                     menu();
                     ?>
                 </ul>
@@ -34,6 +37,7 @@ include "functions.php";
 
 
     <header>
+        <!-- Arrière plan animé en css -->
         <ul class="background">
             <li></li>
             <li></li>
@@ -46,30 +50,48 @@ include "functions.php";
 
     <main>
         <?php
+        // Si couple login mdp incorrect afficher message d'erreur
         if (isset($_GET['login'])) {
             if ($_GET['login'] == "error") {
                 echo '<div class="container-fluid d-flex justify-content-center align-items-center"><div class="alert alert-danger" role="alert">Erreur de connexion</div></div>';
             }
         }
-
+        // Si bouton de déconnexion cliqué (renvoi vers cette page avec l'action logout) detruire la session et renvoyer vers la page de connexion
         if (isset($_GET['action'])) {
             if ($_GET['action'] == "logout") {
                 session_destroy();
                 header("Location: connexion.php");
             }
         }
+        // Si aucune session afficher le formulaire de connexion
         if (!isset($_SESSION['uRole'])) {
-            connexion();
-        } else {
+            ?>
+            <div class="form-container">
+                <form action="functions.php" method="post">
+                    <div class="form-group d-flex flex-column align-items-center">
+                        <label for="email">Adresse email</label>
+                        <input required placeholder="@iut.fr" type="email" class="form-control" id="email" name="email"
+                            aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group d-flex flex-column align-items-center">
+                        <label for="password" class="text-center">Mot de passe</label>
+                        <input required placeholder="Ne partagez pas votre mdp" type="password" class="form-control"
+                            id="password" name="password">
+                    </div>
+                    <div class="form-group d-flex flex-column align-items-center">
+                        <button type="submit" class="btn btn-dark">Connexion</button>
+                    </div>
+                </form>
+            </div>
+            <?php
+        } else { // Sinon afficher un message d'erreur
             echo "<h1 class='text-center'>Vous êtes déjà connecté</h1>";
-        }
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            ;
         }
         ?>
     </main>
 
     <footer class="footer fixed-bottom bg-dark light-text">
+        <!-- Comptes de test -->
         <p class="text-center">
             <span>Compte de test: admin@iut.fr:admin prof1@iut.fr:prof1 etu1@iut.fr:etu1</span>
         </p>

@@ -37,8 +37,7 @@ function noAdminRedirect()
 function menu()
 {
     /*
-    Fonction qui affiche un menu de navigation en fonction de la connexion de l'utilisateur
-    Style: Boostrap 5
+    Fonction qui affiche un menu de navigation en fonction de la connexion de l'utilisateur avec bootstrap
     */
     $connexion = "<li class='nav-item'><a class='nav-link' href='connexion.php'><img src='assets/icons/connexion.png' alt='Connexion' class='icon'></a></li>";
     $index = "<li class='nav-item'><a class='nav-link' href='index.php'><img src='assets/icons/home.png' alt='Accueil' class='icon'></a></li>";
@@ -73,6 +72,7 @@ function menu()
 
 function getProfilePicture($etu)
 {
+    // Fonction qui récupère l'image de profil d'un utilisateur
     $resultat = false;
     try {
         $db = new PDO('sqlite:db/db.sqlite');
@@ -84,27 +84,6 @@ function getProfilePicture($etu)
         echo $e->getMessage();
     }
     return $resultat;
-}
-
-function connexion()
-{
-    echo '<div class="form-container">
-            <form action="functions.php" method="post">
-                <div class="form-group d-flex flex-column align-items-center">
-                    <label for="email">Adresse email</label>
-                    <input required placeholder="@iut.fr" type="email" class="form-control" id="email" name="email"
-                        aria-describedby="emailHelp">
-                </div>
-                <div class="form-group d-flex flex-column align-items-center">
-                    <label for="password" class="text-center">Mot de passe</label>
-                    <input required placeholder="Ne partagez pas votre mdp" type="password" class="form-control"
-                        id="password" name="password">
-                </div>
-                <div class="form-group d-flex flex-column align-items-center">
-                    <button type="submit" class="btn btn-dark">Connexion</button>
-                </div>
-            </form>
-        </div>';
 }
 
 # Fonction d'authentification =============================================================================
@@ -156,6 +135,8 @@ function authentification($login, $pass)
 
 function afficheNotes($notes)
 {
+    // Fonction qui affiche les notes passées en paramètre 
+    // Si la page est modification.php, rajouter une colonne pour la selection
     $matieres = getMatieres();
     $types = getTypeNotes();
     echo '<table class="table table-light table-striped table-hover table-bordered border-dark-subtle table-sm"><thead><tr><th>Matière</th><th>Type</th><th>Note</th><th>Coefficient</th>';
@@ -187,8 +168,8 @@ function afficheNotes($notes)
 
 function afficheUsers()
 {
+    // Fonction qui affiche les utilisateurs de la base de données
     $user = getAllUsers();
-    //login, motdepasse, statut
     echo '<div class="container ">';
     echo '<table class="table table-light table-striped table-hover table-bordered border-dark-subtle table-sm"><thead><tr><th>Login</th><th>Mot de passe</th><th>Statut</th></tr></thead><tbody class="table-group-divider">';
     foreach ($user as $u) {
@@ -203,6 +184,7 @@ function afficheUsers()
 
 function getAllUsers()
 {
+    // Récupère tous les utilisateurs de la base de données
     $users = false;
 
     try {
@@ -218,6 +200,7 @@ function getAllUsers()
 }
 function getAllNotes()
 {
+    // Récupère toutes les notes de la base de données
     $notes = false;
 
     try {
@@ -234,7 +217,9 @@ function getAllNotes()
 
 function getNotesByEtu($notes, $login)
 {
+    // Tri les notes passées en paramètre par étudiant
     $resultat = array();
+    // Si le login est vide, on retourne toutes les notes
     if ($login == "") {
         $resultat = $notes;
     } else {
@@ -249,8 +234,9 @@ function getNotesByEtu($notes, $login)
 
 function getNotesByMat($notes, $matiere)
 {
-
+    // Tri les notes passées en paramètre par matière
     $resultat = array();
+    // Si la matière est égal à all, on retourne toutes les notes
     if ($matiere == "all") {
         $resultat = $notes;
     } else {
@@ -267,7 +253,9 @@ function getNotesByMat($notes, $matiere)
 
 function getNotesByType($notes, $type)
 {
+    // Tri les notes passées en paramètre par type
     $resultat = array();
+    // Si le type est égal à all, on retourne toutes les notes
     if ($type == "all") {
         $resultat = $notes;
     } else {
@@ -282,6 +270,7 @@ function getNotesByType($notes, $type)
 
 function getNoteById($id)
 {
+    // Récupère une note par son id
     $note = false;
     try {
         // Connection to the database
@@ -297,6 +286,7 @@ function getNoteById($id)
 
 function getMatieres()
 {
+    // Récupère toutes les matières de la base de données
     $matieres = false;
     try {
         // Connection to the database
@@ -312,6 +302,7 @@ function getMatieres()
 
 function getTypeNotes()
 {
+    // Récupère tous les types de notes de la base de données
     $type = false;
     try {
         // Connection to the database
@@ -327,6 +318,7 @@ function getTypeNotes()
 
 function getMoyenneByEtu($login)
 {
+    // Récupère la moyenne d'un étudiant
     $moyenne = false;
     $coefficients = 0;
     $notes = getNotesByEtu(getAllNotes(), $login);
@@ -337,10 +329,16 @@ function getMoyenneByEtu($login)
     return round($moyenne / $coefficients, 2);
 }
 
+function getImages() {
+    // Récupère toutes les images de la base de données
+    return array_diff(scandir('assets\profilepicture'), array('.', '..'));
+}
+
 # Modification de la base =============================================================================
 
 function modificationNote($id, $matiere, $type, $note, $coefficient)
 {
+    // Modifie une note dans la base de données
     $resultat = false;
     try {
         $db = new PDO('sqlite:db/db.sqlite');
@@ -354,6 +352,7 @@ function modificationNote($id, $matiere, $type, $note, $coefficient)
 
 function ajoutCompte($login, $pass, $statut, $profilepicture)
 {
+    // Ajoute un compte dans la base de données
     $resultat = false;
     try {
         $db = new PDO('sqlite:db/db.sqlite');
@@ -367,6 +366,7 @@ function ajoutCompte($login, $pass, $statut, $profilepicture)
 
 function supressionCompte($login)
 {
+    // Supprime un compte dans la base de données
     $resultat = false;
     try {
         $db = new PDO('sqlite:db/db.sqlite');
@@ -380,6 +380,7 @@ function supressionCompte($login)
 
 function modificationCompte($login, $pass, $statut, $profilepicture)
 {
+    // Modifie un compte dans la base de données
     $resultat = false;
     try {
         $db = new PDO('sqlite:db/db.sqlite');
@@ -391,22 +392,37 @@ function modificationCompte($login, $pass, $statut, $profilepicture)
     return $resultat;
 }
 
+# Autres fonctions =================================================================================
 
+function uploadImage($image, $name)
+{
+    // Upload une image dans le dossier assets/profilepicture/
+    $resultat = false;
+    $dossierImage = "assets/profilepicture/";
+    $target = $dossierImage . $name;
+    // Tant que le nom de fichier existe deja rajouter un 1 devant
+    while (file_exists($target)) {
+        $name = "1" . $name;
+        $target = $dossierImage . $name;
+    }
+    // Quand le nom est unique on deplace l'image du dossier temporaire vers assets/profilepicture/
+    if (rename($image, $target)) {
+        $resultat = $name;
+    }
+    return $resultat;
+}
 
+function deleteImage($image)
+{
+    // Supprime une image dans le dossier assets/profilepicture/
+    $resultat = false;
+    if (unlink($image)) {
+        $resultat = true;
+    }
+    return $resultat;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Fonctions de connexion ============================================================================
 if (isset($_POST['email']) && isset($_POST['password'])) {
     if (authentification($_POST['email'], $_POST['password'])) {
         header('Location: index.php');

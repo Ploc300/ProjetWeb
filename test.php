@@ -1,21 +1,21 @@
-<?php
-session_start();
+<!DOCTYPE html>
+<html lang="en">
 
-echo '<script>
-try {
-  console.log("test");
-} catch (error) {
-  console.error(error);
-}
-</script>';
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
 
-?>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  try {
-    console.log("test");
-  } catch (error) {
-    console.error(error);
+<body>
+  <?php
+  if (preg_match('/^assets\/profilepicture\/.*\.png$/', "assets/profilepicture/!!!!!!.png")) {
+    echo "oui";
+  } else {
+    echo "non";
   }
-});
-</script>
+
+  ?>
+</body>
+
+</html>
