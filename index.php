@@ -83,7 +83,7 @@ noSessionRedirect();
         <p class="var_dump">
             <!-- Zone de test pour ne pas oublier les oublier dans la version finale -->
             <?php
-            echo getImages();
+            
             ?>
         </p>
         <div class="container text-center">

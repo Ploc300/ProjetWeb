@@ -136,7 +136,7 @@ function afficheNotes($notes)
                         if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
                             echo '<tr><td><img src="' . getMatPicture($matiere['NomMat']) . '" title="' . $matiere['NomMat'] . '" alt="' . $matiere['NomMat'] . '" class="matiere-icon"> ' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>' . $note['login'] . '</td><td><a href="modification.php?id=' . $note['id'] . '"><img src="assets/icons/select.svg" alt="Séléctioner" class="select"></a></td></tr>';
                         } else {
-                            echo '<tr><td><img src="' . getMatPicture($matiere['NomMat']) .'" title="' . $matiere['NomMat'] . '" alt="' . $matiere['NomMat'] . '" class="matiere-icon"> ' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td></tr>';
+                            echo '<tr><td><img src="' . getMatPicture($matiere['NomMat']) . '" title="' . $matiere['NomMat'] . '" alt="' . $matiere['NomMat'] . '" class="matiere-icon"> ' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td></tr>';
                         }
                     }
                 }
@@ -160,6 +160,51 @@ function afficheUsers()
         echo '<tr><td>' . $u['login'] . '</td><td>' . $u['motdepasse'] . '</td><td>' . $u['statut'] . '</td></tr>';
     }
     echo '</tbody><tfoot class="table-group-divider"><tr><th>Login</th><th>Mot de passe</th><th>Statut</th></tr></tfoot></table>';
+    echo "<div class='text-center'><a href='administration.php' class='btn btn-dark'>Retour</a></div>";
+    echo '</div>';
+}
+
+function afficherLogs()
+{
+    // Affiche les logs de connexion dans deux tableau séparer
+    /*
+    Logs syntax:
+    admin@iut.fr de ::1 à Thursday 8th of June 2023 10:31:22 AM
+    admin@iut.fr de ::1 à Thursday 8th of June 2023 10:36:06 AM
+    */
+    $fileS = fopen('logs/success.log', 'r');
+    $fileF = fopen('logs/failed.log', 'r');
+    echo '<div class="container">';
+    echo '<p class="text-center">Logs de connexion réussies</p>';
+    echo '<table class="table table-light table-striped table-hover table-bordered border-dark-subtle table-sm"><thead><tr><th>Utilisateur</th><th>Adresse IP</th><th>Date</th></tr></thead><tbody class="table-group-divider">';
+    while (!feof($fileS)) {
+        $line = fgets($fileS);
+        $parts = explode(' de ', $line);
+        if (count($parts) < 2) {
+            continue;
+        }
+        $user = $parts[0];
+        $ip = explode(' ', $parts[1])[2];
+        $date = explode(' à ', $parts[1])[1];
+        echo '<tr><td>' . $user . '</td><td>' . $ip . '</td><td>' . $date . '</td></tr>';
+    }
+    fclose($fileS);
+    echo '</tbody><tfoot class="table-group-divider"><tr><th>Utilisateur</th><th>Adresse IP</th><th>Date</th></tr></tfoot></table>';
+    echo '<p class="text-center">Logs de connexion échouées</p>';
+    echo '<table class="table table-light table-striped table-hover table-bordered border-dark-subtle table-sm"><thead><tr><th>Utilisateur</th><th>Adresse IP</th><th>Date</th></tr></thead><tbody class="table-group-divider">';
+    while (!feof($fileF)) {
+        $line = fgets($fileF);
+        $parts = explode(' de ', $line);
+        if (count($parts) < 2) {
+            continue;
+        }
+        $user = $parts[0];
+        $ip = explode(' ', $parts[1])[2];
+        $date = explode(' à ', $parts[1])[1];
+        echo '<tr><td>' . $user . '</td><td>' . $ip . '</td><td>' . $date . '</td></tr>';
+    }
+    fclose($fileF);
+    echo '</tbody><tfoot class="table-group-divider"><tr><th>Utilisateur</th><th>Adresse IP</th><th>Date</th></tr></tfoot></table>';
     echo "<div class='text-center'><a href='administration.php' class='btn btn-dark'>Retour</a></div>";
     echo '</div>';
 }
@@ -348,7 +393,7 @@ function getMoyenneByEtu($login)
 function getImages()
 {
     // Récupère toutes les images de la base de données
-    return array_diff(scandir(__DIR__.'/assets/profilepicture/'), array('.', '..'));
+    return array_diff(scandir(__DIR__ . '/assets/profilepicture/'), array('.', '..'));
 }
 
 # Modification de la base =============================================================================

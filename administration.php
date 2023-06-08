@@ -82,6 +82,9 @@ noAdminRedirect();
                 case 'deleteImage':
                     formulaireDeleteImage();
                     break;
+                case 'afficherLogs':
+                    afficherLogs();
+                    break;
             }
         } else if (isset($_POST['action'])) {
             switch ($_POST['action']) {
@@ -143,7 +146,7 @@ noAdminRedirect();
                     if (preg_match('/\.png$/', $_FILES['image']['name'])) {
                         if ($_POST['captcha'] == $_SESSION['code']) {
                             if ($name = uploadImage($_FILES['image']['tmp_name'], $_FILES['image']['name'])) {
-                                echo "<p class='alert alert-success'>Image uploadé avec succès sous le nom: ".$name."</p>";
+                                echo "<p class='alert alert-success'>Image uploadé avec succès sous le nom: " . $name . "</p>";
                             } else {
                                 echo "<p class='alert alert-danger'>Erreur lors de l'upload de l'image</p>";
                             }
@@ -153,7 +156,7 @@ noAdminRedirect();
                     } else {
                         echo "<p class='alert alert-danger'>L'image doit etre au format PNG</p>";
                     }
-                    
+
                     echo "<div class='text-center'><a href='administration.php' class='btn btn-dark'>Retour</a></div>";
                     break;
                 case 'deleteImage':
@@ -166,7 +169,7 @@ noAdminRedirect();
                     } else {
                         echo "<p class='alert alert-danger'>Erreur lors de la vérification du captcha</p>";
                     }
-                    
+
                     echo "<div class='text-center'><a href='administration.php' class='btn btn-dark'>Retour</a></div>";
                     break;
             }
@@ -175,7 +178,7 @@ noAdminRedirect();
             formulaireChoixAdministation();
         }
         ?>
-
+        <div id="under-footer"> </div>
     </main>
 
     <footer class="footer fixed-bottom bg-dark light-text">
@@ -193,6 +196,9 @@ noAdminRedirect();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
         crossorigin="anonymous"></script>
+    <script>
+        document.getElementById("under-footer").style.height = document.getElementById("footer").offsetHeight + "px";
+    </script>
 </body>
 
 </html>

@@ -72,6 +72,9 @@ function formulaireChoixAdministation()
     echo "<div class='form-group'>";
     echo "<a href='administration.php?action=deleteImage' class='btn btn-dark'>Supprimer une image</a>";
     echo "</div>";
+    echo "<div class='form-group'>";
+    echo "<a href='administration.php?action=afficherLogs' class='btn btn-dark'>Afficher les logs</a>";
+    echo "</div>";
     echo "</form>";
     echo "</div>";
 }
