@@ -184,7 +184,7 @@ function afficherLogs()
             continue;
         }
         $user = $parts[0];
-        $ip = explode(' ', $parts[1])[2];
+        $ip = explode(' ', $parts[1])[0];
         $date = explode(' à ', $parts[1])[1];
         echo '<tr><td>' . $user . '</td><td>' . $ip . '</td><td>' . $date . '</td></tr>';
     }
@@ -199,7 +199,7 @@ function afficherLogs()
             continue;
         }
         $user = $parts[0];
-        $ip = explode(' ', $parts[1])[2];
+        $ip = explode(' ', $parts[1])[0];
         $date = explode(' à ', $parts[1])[1];
         echo '<tr><td>' . $user . '</td><td>' . $ip . '</td><td>' . $date . '</td></tr>';
     }
