@@ -348,7 +348,9 @@ function getMoyenneByEtu($login)
 function getImages()
 {
     // Récupère toutes les images de la base de données
-    return array_diff(scandir('assets\profilepicture\\'), array('.', '..'));
+    $images = scandir('assets\profilepicture\\');
+    echo $images;
+    return array_diff($images, array('.', '..'));
 }
 
 # Modification de la base =============================================================================
