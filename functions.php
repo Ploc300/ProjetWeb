@@ -70,38 +70,6 @@ function menu()
     }
 }
 
-function getProfilePicture($etu)
-{
-    // Fonction qui récupère l'image de profil d'un utilisateur
-    $resultat = false;
-    try {
-        $db = new PDO('sqlite:db/db.sqlite');
-        $rq = 'SELECT profilepicture FROM Comptes WHERE (login = "' . $etu . '")';
-        $resultat = $db->query($rq);
-        $resultat = $resultat->fetch(PDO::FETCH_ASSOC);
-        $resultat = $resultat['profilepicture'];
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-    return $resultat;
-}
-
-function getMatPicture($matiere)
-{
-    // Fonction qui récupère l'image d'une matière
-    $resultat = false;
-    try {
-        $db = new PDO('sqlite:db/db.sqlite');
-        $rq = 'SELECT Image FROM Matieres WHERE (NomMat = "' . $matiere . '")';
-        $resultat = $db->query($rq);
-        $resultat = $resultat->fetch(PDO::FETCH_ASSOC);
-        $resultat = $resultat['Image'];
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-    return $resultat;
-}
-
 # Fonction d'authentification =============================================================================
 
 function authentification($login, $pass)
@@ -197,6 +165,38 @@ function afficheUsers()
 }
 
 # Fonction de recuperation =============================================================================
+
+function getProfilePicture($etu)
+{
+    // Fonction qui récupère l'image de profil d'un utilisateur
+    $resultat = false;
+    try {
+        $db = new PDO('sqlite:db/db.sqlite');
+        $rq = 'SELECT profilepicture FROM Comptes WHERE (login = "' . $etu . '")';
+        $resultat = $db->query($rq);
+        $resultat = $resultat->fetch(PDO::FETCH_ASSOC);
+        $resultat = $resultat['profilepicture'];
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    return $resultat;
+}
+
+function getMatPicture($matiere)
+{
+    // Fonction qui récupère l'image d'une matière
+    $resultat = false;
+    try {
+        $db = new PDO('sqlite:db/db.sqlite');
+        $rq = 'SELECT Image FROM Matieres WHERE (NomMat = "' . $matiere . '")';
+        $resultat = $db->query($rq);
+        $resultat = $resultat->fetch(PDO::FETCH_ASSOC);
+        $resultat = $resultat['Image'];
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    return $resultat;
+}
 
 function getAllUsers()
 {
@@ -348,7 +348,7 @@ function getMoyenneByEtu($login)
 function getImages()
 {
     // Récupère toutes les images de la base de données
-    return array_diff(scandir('assets\profilepicture'), array('.', '..'));
+    return array_diff(scandir('assets\profilepicture\\'), array('.', '..'));
 }
 
 # Modification de la base =============================================================================
