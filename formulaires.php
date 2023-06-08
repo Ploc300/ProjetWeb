@@ -102,7 +102,7 @@ function formulaireAjoutAdmin()
     echo "</select>";
     echo "</div>";
     echo "<div class='form-group'>";
-    echo '<input class=\'form-control\' required placeholder="Captcha" type="text" name="captcha">';
+    echo '<input class=\'form-control\' placeholder="Captcha" type="text" name="captcha">';
     echo '<span class="card ">';
     echo '<img src="image.php" onclick="this.src=\'image.php?\' + Math.random();" alt="captcha" style="cursor:pointer;">';
     echo '</span>';
