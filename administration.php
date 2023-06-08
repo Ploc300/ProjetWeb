@@ -2,7 +2,6 @@
 session_start();
 include "functions.php";
 include "formulaires.php";
-include "logsToGraph.php";
 noSessionRedirect();
 noAdminRedirect();
 ?>
@@ -82,9 +81,6 @@ noAdminRedirect();
                     break;
                 case 'deleteImage':
                     formulaireDeleteImage();
-                    break;
-                case 'afficherLogs':
-                    afficheGraphsLogs(getLogs());
                     break;
             }
         } else if (isset($_POST['action'])) {

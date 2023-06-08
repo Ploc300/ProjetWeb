@@ -39,13 +39,13 @@ function menu()
     /*
     Fonction qui affiche un menu de navigation en fonction de la connexion de l'utilisateur avec bootstrap
     */
-    $connexion = "<li class='nav-item'><a class='nav-link' href='connexion.php'><img src='assets/icons/connexion.png' alt='Connexion' class='icon'></a></li>";
-    $index = "<li class='nav-item'><a class='nav-link' href='index.php'><img src='assets/icons/home.png' alt='Accueil' class='icon'></a></li>";
-    $insertion = "<li class='nav-item'><a class='nav-link' href='insertion.php'><img src='assets/icons/plus.png' alt='Insertion' class='icon'></a></li>";
-    $modification = "<li class='nav-item'><a class='nav-link' href='modification.php'><img src='assets/icons/crayon.png' alt='Modification' class='icon'></a></li>";
-    $supression = "<li class='nav-item'><a class='nav-link' href='supression.php'><img src='assets/icons/poubelle.png' alt='Supression' class='icon'></a></li>";
-    $administration = "<li class='nav-item'><a class='nav-link' href='administration.php'><img src='assets/icons/cle.png' alt='Addministration' class='icon'></a></li>";
-    $deconnexion = "<li class='nav-item'><a class='nav-link' href='connexion.php?action=logout'><img src='assets/icons/deconnexion.png' alt='Deconnexion' class='icon'></a></li>";
+    $connexion = "<li class='nav-item'><a class='nav-link' href='connexion.php'><img src='assets/icons/connexion.svg' alt='Connexion' title='Connexion' class='icon'></a></li>";
+    $index = "<li class='nav-item'><a class='nav-link' href='index.php'><img src='assets/icons/home.svg' alt='Accueil' title='Accueil' class='icon'></a></li>";
+    $insertion = "<li class='nav-item'><a class='nav-link' href='insertion.php'><img src='assets/icons/plus.svg' alt='Insertion' title='Insertion' class='icon'></a></li>";
+    $modification = "<li class='nav-item'><a class='nav-link' href='modification.php'><img src='assets/icons/crayon.svg' alt='Modification' title='Modification' class='icon'></a></li>";
+    $supression = "<li class='nav-item'><a class='nav-link' href='supression.php'><img src='assets/icons/poubelle.svg' alt='Supression' title='Supression' class='icon'></a></li>";
+    $administration = "<li class='nav-item'><a class='nav-link' href='administration.php'><img src='assets/icons/admin.svg' alt='Administration' title='Administration' class='icon'></a></li>";
+    $deconnexion = "<li class='nav-item'><a class='nav-link' href='connexion.php?action=logout'><img src='assets/icons/deconnexion.svg' alt='Deconnexion' title='Deconnexion' class='icon'></a></li>";
     if (!isset($_SESSION['uRole'])) {
         echo $connexion;
     } else if ($_SESSION['uRole'] == "administrateur") {
@@ -80,6 +80,22 @@ function getProfilePicture($etu)
         $resultat = $db->query($rq);
         $resultat = $resultat->fetch(PDO::FETCH_ASSOC);
         $resultat = $resultat['profilepicture'];
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+    return $resultat;
+}
+
+function getMatPicture($matiere)
+{
+    // Fonction qui récupère l'image d'une matière
+    $resultat = false;
+    try {
+        $db = new PDO('sqlite:db/db.sqlite');
+        $rq = 'SELECT Image FROM Matieres WHERE (NomMat = "' . $matiere . '")';
+        $resultat = $db->query($rq);
+        $resultat = $resultat->fetch(PDO::FETCH_ASSOC);
+        $resultat = $resultat['Image'];
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
@@ -150,9 +166,9 @@ function afficheNotes($notes)
                 if ($note['noMat'] == $matiere['NoMat']) {
                     if ($note['noNote'] == $type['NoNote']) {
                         if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
-                            echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>' . $note['login'] . '</td><td><a href="modification.php?id=' . $note['id'] . '"><img src="assets/icons/select.png" alt="Séléctioner" class="select"></a></td></tr>';
+                            echo '<tr><td><img src="' . getMatPicture($matiere['NomMat']) . '" title="' . $matiere['NomMat'] . '" alt="' . $matiere['NomMat'] . '" class="matiere-icon"> ' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>' . $note['login'] . '</td><td><a href="modification.php?id=' . $note['id'] . '"><img src="assets/icons/select.svg" alt="Séléctioner" class="select"></a></td></tr>';
                         } else {
-                            echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td></tr>';
+                            echo '<tr><td><img src="' . getMatPicture($matiere['NomMat']) .'" title="' . $matiere['NomMat'] . '" alt="' . $matiere['NomMat'] . '" class="matiere-icon"> ' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td></tr>';
                         }
                     }
                 }
@@ -329,7 +345,8 @@ function getMoyenneByEtu($login)
     return round($moyenne / $coefficients, 2);
 }
 
-function getImages() {
+function getImages()
+{
     // Récupère toutes les images de la base de données
     return array_diff(scandir('assets\profilepicture'), array('.', '..'));
 }

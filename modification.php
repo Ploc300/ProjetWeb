@@ -71,7 +71,7 @@ noProfRedirect()
             // Si une note a été sélectionnée afficher le formulaire de modification
             if (isset($_GET['id'])) {
                 ?>
-                <form action="modification.php?action=modif" class="text-center p-3" method="post">
+                <form action="modification.php?action=modif" class="align-items-center text-center p-3" method="post">
                     <?php
                     FormulaireModification($_GET['id']);
                     ?>

@@ -38,7 +38,9 @@ function FormulaireModification($id)
     echo "</div>";
     echo "<div class='form-group'>";
     echo '<input class=\'form-control\' placeholder="Captcha" type="text" name="captcha">';
+    echo '<span class="card ">';
     echo '<img src="image.php" onclick="this.src=\'image.php?\' + Math.random();" alt="captcha" style="cursor:pointer;">';
+    echo '</span>';
     echo "</div>";
     echo "<div class='form-group'>";
     echo "<button type='submit' class='btn btn-dark'>Modifier</button>";
@@ -69,9 +71,6 @@ function formulaireChoixAdministation()
     echo "</div>";
     echo "<div class='form-group'>";
     echo "<a href='administration.php?action=deleteImage' class='btn btn-dark'>Supprimer une image</a>";
-    echo "</div>";
-    echo "<div class='form-group'>";
-    echo "<a href='administration.php?action=afficherLogs' class='btn btn-dark'>Afficher les graphs des logs</a>";
     echo "</div>";
     echo "</form>";
     echo "</div>";
@@ -104,7 +103,9 @@ function formulaireAjoutAdmin()
     echo "</div>";
     echo "<div class='form-group'>";
     echo '<input class=\'form-control\' required placeholder="Captcha" type="text" name="captcha">';
+    echo '<span class="card ">';
     echo '<img src="image.php" onclick="this.src=\'image.php?\' + Math.random();" alt="captcha" style="cursor:pointer;">';
+    echo '</span>';
     echo "</div>";
     echo "<div class='form-group'>";
     echo "<button type='submit' name='action' value='ajout' class='btn btn-dark'>Ajouter</button>";
@@ -127,7 +128,9 @@ function formulaireSupressionAdmin()
     echo "</div>";
     echo "<div class='form-group'>";
     echo '<input class=\'form-control\' required placeholder="Captcha" type="text" name="captcha">';
+    echo '<span class="card ">';
     echo '<img src="image.php" onclick="this.src=\'image.php?\' + Math.random();" alt="captcha" style="cursor:pointer;">';
+    echo '</span>';
     echo "</div>";
     echo "<div class='form-group'>";
     echo "<button type='submit' name='action' value='supression' class='btn btn-dark'>Supprimer</button>";
@@ -167,7 +170,9 @@ function formulaireModificationAdmin()
     echo "</div>";
     echo "<div class='form-group'>";
     echo '<input class=\'form-control\' required placeholder="Captcha" type="text" name="captcha">';
+    echo '<span class="card ">';
     echo '<img src="image.php" onclick="this.src=\'image.php?\' + Math.random();" alt="captcha" style="cursor:pointer;">';
+    echo '</span>';
     echo "</div>";
     echo "<div class='form-group'>";
     echo "<button type='submit' name='action' value='modification' class='btn btn-dark'>Modifier</button>";
@@ -188,7 +193,9 @@ function formulaireUploadImage()
     echo "</div>";
     echo "<div class='form-group'>";
     echo '<input class=\'form-control\' required placeholder="Captcha" type="text" name="captcha">';
+    echo '<span class="card ">';
     echo '<img src="image.php" onclick="this.src=\'image.php?\' + Math.random();" alt="captcha" style="cursor:pointer;">';
+    echo '</span>';
     echo "</div>";
     echo "<div class='form-group'>";
     echo "<button type='submit' name='action' value='uploadImage' class='btn btn-dark'>Uploader</button>";
@@ -212,7 +219,9 @@ function formulaireDeleteImage()
     echo "</div>";
     echo "<div class='form-group'>";
     echo '<input class=\'form-control\' required placeholder="Captcha" type="text" name="captcha">';
+    echo '<span class="card ">';
     echo '<img src="image.php" onclick="this.src=\'image.php?\' + Math.random();" alt="captcha" style="cursor:pointer;">';
+    echo '</span>';
     echo "</div>";
     echo "<div class='form-group'>";
     echo "<button type='submit' name='action' value='deleteImage' class='btn btn-dark'>Supprimer</button>";
