@@ -165,7 +165,7 @@ function formulaireModificationAdmin()
     echo "</select>";
     echo "</div>";
     echo "<div class='form-group'>";
-    echo "<select required class='form-control' name='image' id='image'>";
+    echo "<select class='form-control' name='image' id='image'>";
     foreach (getImages() as $_ => $image) {
         echo "<option value='assets/profilepicture/" . $image . "'>" . $image . "</option>";
     }
