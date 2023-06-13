@@ -191,7 +191,7 @@ function formulaireUploadImage()
     echo "<form action='administration.php' method='post' enctype='multipart/form-data'>";
     echo "<p>Uploader une image</p>";
     echo "<div class='form-group'>";
-    echo "<input require accept='.png' type='file' class='form-control' name='image' id='image'>";
+    echo "<input required accept='.png' type='file' class='form-control' name='image' id='image'>";
     echo "<div id='imageHelp' class='form-text'>Seul les fichiers .png sont acceptés (max: 10Mb)</div>";
     echo "</div>";
     echo "<div class='form-group'>";

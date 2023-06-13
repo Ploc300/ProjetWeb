@@ -181,7 +181,7 @@ noAdminRedirect();
         <div id="under-footer"> </div>
     </main>
 
-    <footer class="footer fixed-bottom bg-dark light-text">
+    <footer id="footer" class="footer fixed-bottom bg-dark light-text">
         <p class="var_dump">
             <?php
             // var_dump();
