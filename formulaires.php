@@ -98,7 +98,7 @@ function formulaireAjoutAdmin()
     echo "</select>";
     echo "</div>";
     echo "<div class='form-group'>";
-    echo "<select required class='form-control' name='image' id='image' size='".sizeof(getImages())."'>";
+    echo "<select required class='form-control' name='image' id='image' placeholder='image'>";
     foreach (getImages() as $useless => $image) {
         echo "<option value='assets/profilepicture/" . $image . "'>" . $image . "</option>";
     }
