@@ -188,7 +188,7 @@ noAdminRedirect();
             ?>
         </p>
         <div class="container text-center">
-            <span>Alexis PENCRANE - Noann LOSSER | 2023 | All right reserved &copy</span>
+            <span>Alexis PENCRANE - Noann LOSSER | 2023 | All right reserved &copy;</span>
         </div>
     </footer>
 
