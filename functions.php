@@ -1,5 +1,15 @@
 <?php
-
+header("Content-Security-Policy: default-src 'self'");
+function secure($data)
+{
+    /*
+    Fonction qui sécurise les données entrées par l'utilisateur
+    */
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 # Fonction de redirection =============================================================================
 
 function noSessionRedirect()
@@ -79,12 +89,15 @@ function authentification($login, $pass)
     et attribue un role à l'utilisateur
     */
     $retour = false;
+    $login = secure($login);
+    $pass = secure($pass);
     try {
         session_start();
         // Connection to the database
         $db = new PDO('sqlite:db/db.sqlite');
-        $rq = 'SELECT * FROM Comptes WHERE (login = "' . $login . '") and (motdepasse = "' . $pass . '")';
-        $resultat = $db->query($rq);
+        $rq = $db->prepare('SELECT * FROM Comptes WHERE login = ? and motdepasse = ?');
+        $rq->execute(array($login, $pass));
+        $resultat = $rq;
         $etu = $resultat->fetch(PDO::FETCH_ASSOC);
 
         // Check if the user/password combination is correct
@@ -402,10 +415,16 @@ function modificationNote($id, $matiere, $type, $note, $coefficient)
 {
     // Modifie une note dans la base de données
     $resultat = false;
+    $id = secure($id);
+    $matiere = secure($matiere);
+    $type = secure($type);
+    $note = secure($note);
+    $coefficient = secure($coefficient);
     try {
         $db = new PDO('sqlite:db/db.sqlite');
-        $rq = 'UPDATE NotesMatieres SET noMat = ' . $matiere . ', noNote = ' . $type . ', note = ' . $note . ', Coefficient = ' . $coefficient . ' WHERE id = ' . $id;
-        $resultat = $db->exec($rq);
+        $rq = 'UPDATE NotesMatieres SET noMat = ? , noNote = ? , note = ? , Coefficient = ? WHERE id = ?';
+        $rq = $db->prepare($rq);
+        $resultat = $rq->execute([$matiere, $type, $note, $coefficient, $id]);
     } catch (Exception $e) {
         echo "erreur de connection a la BDO";
     }
@@ -416,10 +435,15 @@ function ajoutCompte($login, $pass, $statut, $profilepicture)
 {
     // Ajoute un compte dans la base de données
     $resultat = false;
+    $login = secure($login);
+    $pass = secure($pass);
+    $statut = secure($statut);
+    $profilepicture = secure($profilepicture);
     try {
         $db = new PDO('sqlite:db/db.sqlite');
-        $rq = 'INSERT INTO Comptes (login, motdepasse, statut, profilepicture) VALUES ("' . $login . '", "' . $pass . '", "' . $statut . '", "' . $profilepicture . '")';
-        $resultat = $db->exec($rq);
+        $rq = 'INSERT INTO Comptes (login, motdepasse, statut, profilepicture) VALUES (?, ?, ?, ?)';
+        $rq = $db->prepare($rq);
+        $resultat = $rq->execute([$login, $pass, $statut, $profilepicture]);
     } catch (Exception $e) {
         echo "erreur de connection a la BDO";
     }
@@ -430,10 +454,12 @@ function supressionCompte($login)
 {
     // Supprime un compte dans la base de données
     $resultat = false;
+    $login = secure($login);
     try {
         $db = new PDO('sqlite:db/db.sqlite');
-        $rq = 'DELETE FROM Comptes WHERE login = "' . $login . '"';
-        $resultat = $db->exec($rq);
+        $rq = 'DELETE FROM Comptes WHERE login = ?';
+        $rq = $db->prepare($rq);
+        $resultat = $rq->execute([$login]);
     } catch (Exception $e) {
         echo "erreur de connection a la BDO";
     }
@@ -444,10 +470,16 @@ function modificationCompte($login, $pass, $statut, $profilepicture)
 {
     // Modifie un compte dans la base de données
     $resultat = false;
+    $login = secure($login);
+    $pass = secure($pass);
+    $statut = secure($statut);
+    $profilepicture = secure($profilepicture);
     try {
         $db = new PDO('sqlite:db/db.sqlite');
-        $rq = 'UPDATE Comptes SET motdepasse = "' . $pass . '", statut = "' . $statut . '", profilepicture = "' . $profilepicture . '" WHERE login = "' . $login . '"';
-        $resultat = $db->exec($rq);
+        $rq = 'UPDATE Comptes SET motdepasse = ? , statut = ? , profilepicture = ? WHERE login = ?';
+        $rq = $db->prepare($rq);
+        $resultat = $rq->execute([$pass, $statut, $profilepicture, $login]);
+
     } catch (Exception $e) {
         echo "erreur de connection a la BDO";
     }
@@ -460,6 +492,8 @@ function uploadImage($image, $name)
 {
     // Upload une image dans le dossier assets/profilepicture/
     $resultat = false;
+    $image = secure($image);
+    $name = secure($name);
     $dossierImage = "assets/profilepicture/";
     $target = $dossierImage . $name;
     // Tant que le nom de fichier existe deja rajouter un 1 devant
@@ -478,6 +512,7 @@ function deleteImage($image)
 {
     // Supprime une image dans le dossier assets/profilepicture/
     $resultat = false;
+    $image = secure($image);
     if (unlink($image)) {
         $resultat = true;
     }
@@ -486,7 +521,9 @@ function deleteImage($image)
 
 # Fonctions de connexion ============================================================================
 if (isset($_POST['email']) && isset($_POST['password'])) {
-    if (authentification($_POST['email'], $_POST['password'])) {
+    $email = htmlspecialchars(strip_tags($_POST['email']));
+    $password = htmlspecialchars(strip_tags($_POST['password']));
+    if (authentification($email, $password)) {
         header('Location: index.php');
     } else {
         header('Location: connexion.php?login=error');

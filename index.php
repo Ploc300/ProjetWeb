@@ -1,4 +1,5 @@
 <?php
+header("Content-Security-Policy: default-src 'self'");
 session_start();
 include "functions.php";
 // Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion

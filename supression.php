@@ -1,4 +1,5 @@
 <?php
+header("Content-Security-Policy: default-src 'self'");
 session_start();
 include "functions.php";
 noSessionRedirect();
