@@ -1,5 +1,4 @@
 <?php
-header("Content-Security-Policy: default-src 'self'");
 function FormulaireModification($id)
 {
     // Affiche le formulaire de modification d'une note

@@ -1,5 +1,4 @@
 <?php
-header("Content-Security-Policy: default-src 'self'");
 function secure($data)
 {
     /*

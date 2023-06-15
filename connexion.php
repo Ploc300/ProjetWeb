@@ -1,6 +1,4 @@
 <?php
-// Sécurisation de la page
-header("Content-Security-Policy: default-src 'self'");
 // Démarrage de la session
 session_start();
 // Inclusion des fichiers php
