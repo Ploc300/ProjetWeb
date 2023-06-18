@@ -72,8 +72,7 @@ include "formulaires.php";
                 <form action="functions.php" method="post">
                     <div class="form-group d-flex flex-column align-items-center">
                         <label for="email">Adresse email</label>
-                        <input required placeholder="@iut.fr" type="email" class="form-control" id="email" name="email"
-                            aria-describedby="emailHelp">
+                        <input required placeholder="@iut.fr" type="email" class="form-control" id="email" name="email">
                     </div>
                     <div class="form-group d-flex flex-column align-items-center">
                         <label for="password" class="text-center">Mot de passe</label>
