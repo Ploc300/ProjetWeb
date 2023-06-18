@@ -48,6 +48,37 @@ function FormulaireModification($id)
 
 }
 
+function formulaireInsertion(){
+
+    echo "<div class='form-group'>";
+    echo "<input type='email' class='form-control' value='' name='login_insert' id='login_insert' placeholder='Login'>";
+    echo "</div>";
+    echo "<div class='form-group'>";
+    echo "<select class='form-control' name='matiere_insert' id='matiere_insert'>";
+    foreach (getMatieres() as $matiere) {
+        echo "<option value='" . $matiere['NoMat'] . "'>" . $matiere['NomMat'] . "</option>";
+    }
+    echo "</select>";
+    echo "</div>";
+    echo "<div class='form-group'>";
+    echo "<select class='form-control' name='type_insert' id='type_insert'>";
+    foreach (getTypeNotes() as $type) {
+        echo "<option value='" . $type['NoNote'] . "'>" . $type['NomNote'] . "</option>";
+    }
+    echo "</select>";
+    echo "</div>";
+    echo "<div class='form-group'>";
+    echo "<input type='number' class='form-control' value='' name='note_insert' id='note_insert' placeholder='Note' min='0' max='20'>";
+    echo "</div>";
+    echo "<div class='form-group'>";
+    echo "<input type='number' class='form-control' value='' name='coeff_insert' id='coeff_insert' placeholder='Coefficient' min='0' max='5'>";
+    echo "</div>";
+    echo "<div class='form-group'>";
+    echo "<button type='submit' class='btn btn-dark'>Insérer</button>";
+    echo "</div>";
+
+}
+
 function formulaireChoixAdministation()
 {
     // Affiche le formulaire de choix de la page administration
