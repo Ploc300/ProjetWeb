@@ -79,6 +79,35 @@ function formulaireInsertion(){
 
 }
 
+function formulaireIndex(){
+    echo "<div class='form-group'>";
+    echo "<select class='form-control' name='login_index' id='login_index'>";
+    echo "<option value='all' selected>Tous les logins</option>";
+    foreach (getLogin() as $login) {
+        echo "<option value='" . $login['login'] . "'>" . $login['login'] . "</option>"; 
+    }
+    echo "</select>";
+    echo "</div>";
+    echo "<div class='form-group'>";
+    echo "<select class='form-control' name='matiere' id='matiere'>";
+    echo "<option value='all' selected>Toutes les matières</option>";
+    foreach (getMatieres() as $matiere) {
+        echo "<option value='" . $matiere['NoMat'] . "'>" . $matiere['NomMat'] . "</option>";
+    }
+    echo "</select>";
+    echo "</div>";
+    echo "<div class='form-group'>";
+    echo "<select class='form-control' name='type' id='type'>";
+    echo "<option value='all' selected>Tous les types</option>";
+    foreach (getTypeNotes() as $type) {
+        echo "<option value='" . $type['NoNote'] . "'>" . $type['NomNote'] . "</option>";
+    }
+    echo "</select>";
+    echo "</div>";
+    echo "<button type='submit' class='btn btn-dark'>Rechercher</button>";
+    echo "</div>";
+}
+
 function formulaireChoixAdministation()
 {
     // Affiche le formulaire de choix de la page administration

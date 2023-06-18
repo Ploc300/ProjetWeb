@@ -136,8 +136,11 @@ function afficheNotes($notes)
     $matieres = getMatieres();
     $types = getTypeNotes();
     echo '<table class="table table-light table-striped table-hover table-bordered border-dark-subtle table-sm"><thead><tr><th>Matière</th><th>Type</th><th>Note</th><th>Coefficient</th>';
-    if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
-        echo '<th>Etudiant</th><th>Séléctioner</th>';
+    if ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "suppression")) {
+        echo '<th>Etudiant</th><th>Séléctionner</th>';
+    }
+    if ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "insertion") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "index")) {
+        echo '<th>Etudiant</th>';
     }
     echo '</tr></thead><tbody class="table-group-divider">';
     foreach ($notes as $note) {
@@ -147,6 +150,10 @@ function afficheNotes($notes)
                     if ($note['noNote'] == $type['NoNote']) {
                         if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
                             echo '<tr><td><img src="' . getMatPicture($matiere['NomMat']) . '" title="' . $matiere['NomMat'] . '" alt="' . $matiere['NomMat'] . '" class="matiere-icon"> ' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>' . $note['login'] . '</td><td><a href="modification.php?id=' . $note['id'] . '"><img src="assets/icons/select.svg" alt="Séléctioner" class="select"></a></td></tr>';
+                        } elseif (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "suppression") {
+                            echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>' . $note['login'] . '</td><td><a href="suppression.php?id=' . $note['id'] . '"><img src="assets/icons/select.svg" alt="Séléctionner" class="select"></a></td></tr>';
+                        } elseif ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "insertion") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "index")) {
+                            echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>' . $note['login'] . '</td></tr>';
                         } else {
                             echo '<tr><td><img src="' . getMatPicture($matiere['NomMat']) . '" title="' . $matiere['NomMat'] . '" alt="' . $matiere['NomMat'] . '" class="matiere-icon"> ' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td></tr>';
                         }
@@ -156,8 +163,11 @@ function afficheNotes($notes)
         }
     }
     echo '</tbody><tfoot class="table-group-divider"><tr><th>Matière</th><th>Type</th><th>Note</th><th>Coefficient</th>';
-    if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
+    if ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "suppression")) {
         echo '<th>Etudiant</th><th>Séléctioner</th>';
+    }
+    if ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "insertion") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "index")) {
+        echo '<th>Etudiant</th>';
     }
     echo '</tr></tfoot></table>';
 }
@@ -222,6 +232,21 @@ function afficherLogs()
 }
 
 # Fonction de recuperation =============================================================================
+
+function getLogin()
+{
+    $login = false;
+    try {
+        // Connection to the database
+        $db = new PDO('sqlite:db/db.sqlite');
+        $rq = "SELECT login,statut FROM Comptes where statut = 'utilisateur'";
+        $resultat = $db->query($rq);
+        $login = $resultat->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        echo "erreur de connection a la BDO";
+    }
+    return $login;
+}
 
 function getProfilePicture($etu)
 {
@@ -293,7 +318,7 @@ function getNotesByEtu($notes, $login)
     // Tri les notes passées en paramètre par étudiant
     $resultat = array();
     // Si le login est vide, on retourne toutes les notes
-    if ($login == "") {
+    if (($login == "") ||($login == 'all')) {
         $resultat = $notes;
     } else {
         foreach ($notes as $note) {
@@ -435,12 +460,12 @@ function insertionNote($login, $matiere, $type, $note, $coefficient)
     $resultat = false;
     try {
         $db = new PDO('sqlite:db/db.sqlite');
-        $rq = "INSERT INTO NotesMatieres('login','noMat','noNote','Coefficient','note') VALUES('".$login."','".$matiere."','".$type."','".$coefficient."','".$note."');";
+        $rq = "INSERT INTO NotesMatieres('login','noMat','noNote','Coefficient','note') VALUES('" . $login . "','" . $matiere . "','" . $type . "','" . $coefficient . "','" . $note . "');";
         $resultat = $db->exec($rq);
     } catch (Exception $e) {
         echo "erreur de connection a la BDO";
     }
-    return $resultat; 
+    return $resultat;
 }
 
 function ajoutCompte($login, $pass, $statut, $profilepicture)
