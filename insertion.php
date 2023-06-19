@@ -20,7 +20,7 @@ noProfRedirect();
 <body>
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-        <a class="navbar-brand">
+            <a class="navbar-brand">
                 <div>
                     <img src="assets/icons/logo.png" alt="GradeUp Logo" class="d-inline-block align-text-top">
                     GradeUp
@@ -45,7 +45,7 @@ noProfRedirect();
 
 
     <header>
-    <ul class="background">
+        <ul class="background">
             <li></li>
             <li></li>
             <li></li>
@@ -64,12 +64,12 @@ noProfRedirect();
                     <h1 class="text-center">Insertion de notes</h1>
                 </div>
             </div>
-                <form action="insertion.php?action=insert" class="text-center p-3" method="post">
-                    <?php
-                    formulaireInsertion();
-                    ?>
-                </form>
+            <form action="insertion.php?action=insert" class="text-center p-3" method="post">
                 <?php
+                formulaireInsertion();
+                ?>
+            </form>
+            <?php
             if (isset($_GET["action"])) {
                 if (($_GET['action'] == "insert")) {
                     if (isset($_POST['login_insert']) && isset($_POST['matiere_insert']) && isset($_POST['type_insert']) && isset($_POST['note_insert']) && isset($_POST['coeff_insert'])) {
@@ -83,7 +83,7 @@ noProfRedirect();
                 }
             }
             ?>
-   </main>
+    </main>
     <footer id="footer" class="footer fixed-bottom bg-dark light-text">
         <p class="var_dump">
             <?php
