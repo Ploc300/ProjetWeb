@@ -455,17 +455,17 @@ function modificationNote($id, $matiere, $type, $note, $coefficient)
     return $resultat;
 }
 
-function insertionNote($login, $matiere, $type, $note, $coefficient)
+function insertionNote($login, $matiere, $type, $coefficient,$note)
 {
     $resultat = false;
     try {
         $db = new PDO('sqlite:db/db.sqlite');
-        $rq = "INSERT INTO NotesMatieres('login','noMat','noNote','Coefficient','note') VALUES('" . $login . "','" . $matiere . "','" . $type . "','" . $coefficient . "','" . $note . "');";
+        $rq = "INSERT INTO NotesMatieres('login','noMat','noNote','Coefficient','note') VALUES('".$login."','".$matiere."','".$type."','".$coefficient."','".$note."');";
         $resultat = $db->exec($rq);
     } catch (Exception $e) {
         echo "erreur de connection a la BDO";
     }
-    return $resultat;
+    return $resultat; 
 }
 
 function supressionNote($id){
