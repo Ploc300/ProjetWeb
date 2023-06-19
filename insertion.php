@@ -87,7 +87,7 @@ noProfRedirect();
     <footer id="footer" class="footer fixed-bottom bg-dark light-text">
         <p class="var_dump">
             <?php
-
+            var_dump($_POST);
             ?>
         </p>
         <div class="container text-center">
