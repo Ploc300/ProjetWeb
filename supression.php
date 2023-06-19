@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "functions.php";
+include "formulaires.php";
 noSessionRedirect();
 noProfRedirect();
 ?>
@@ -12,9 +13,9 @@ noProfRedirect();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Suppression Notes - GradeUp</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src='https://www.google.com/recaptcha/api.js' async defer></script>
 </head>
 
 <body>
@@ -58,24 +59,115 @@ noProfRedirect();
     </header>
 
     <main>
+        <?php
 
+
+        ?>
+        <div class="container mx-auto">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="text-center">Suppression des notes</h1>
+                </div>
+            </div>
+            <?php
+            if (isset($_GET['id'])) {
+                ?>
+                <form id="suppression" action="supression.php?action=sup" class="text-center p-3" method="post">
+                    <?php
+                    formulaireSuppression($_GET['id']);
+                    ?>
+                </form>
+                <?php
+            }
+
+            if (isset($_GET["action"])) {
+                //captcha suppression
+                $secretKey = "6Lcb66wmAAAAAC5Di5X0c-pKjngKgCIMP9B8xZP6";
+                $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($secretKey) . '&response=' . urlencode($_POST['g-recaptcha-response']);
+                $response = file_get_contents($url);
+                $responseKeys = json_decode($response, true);
+                if (($_GET['action'] == "sup" && ($responseKeys["success"]))) {
+                    if (isset($_POST['id_sup'])) {
+                        if (supressionNote($_POST['id_sup'])) {
+                            echo "<div class='alert alert-success' role='alert'>La note a bien été supprimée</div>";
+                        } else {
+                            echo "<div class='alert alert-danger' role='alert'>La note n'a pas pu être supprimée</div>";
+                        }
+                    }
+                } else {
+                    echo "<div class='alert alert-danger' role='alert'>Le captcha est incorrect</div>";
+                }
+            }
+
+            ?>
+            <!-- Formulaire de tri pour la sélection des notes -->
+            <form action="#" class="text-center p-3">
+                <div class="form-group">
+                    <select class="form-control" name="login" id="login_suppr">
+                        <option value="all" selected>Tous les logins</option>
+                        <?php
+                        foreach (getLogin() as $login) {
+                            echo "<option value='" . $login['login'] . "'>" . $login['login'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="matiere" id="matiere_suppr">
+                        <option value="all" selected>Toutes les matières</option>
+                        <?php
+                        foreach (getMatieres() as $matiere) {
+                            echo "<option value='" . $matiere['NoMat'] . "'>" . $matiere['NomMat'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" name="type" id="type_suppr">
+                        <option value="all" selected>Tous les types</option>
+                        <?php
+                        foreach (getTypeNotes() as $type) {
+                            echo "<option value='" . $type['NoNote'] . "'>" . $type['NomNote'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-dark">Rechercher</button>
+            </form>
+            <?php
+
+
+            if (isset($_GET['login']) && isset($_GET['matiere']) && isset($_GET['type'])) {
+                $notes = getNotesByEtu(getNotesByMat(getNotesByType(getAllNotes(), $_GET['type']), $_GET['matiere']), $_GET['login']);
+                if (empty($notes)) {
+                    echo "<p class='text-center'>Aucune note trouvée</p>";
+                } else {
+                    afficheNotes($notes);
+                }
+            } else {
+                afficheNotes(getAllNotes());
+            }
+            ?>
+        </div>
+        <div id="under-footer"> </div>
     </main>
-
-    <footer class="footer fixed-bottom bg-dark light-text">
+    <footer id="footer" class="footer fixed-bottom bg-dark light-text">
         <p class="var_dump">
             <?php
 
             ?>
         </p>
         <div class="container text-center">
-            <span>Alexis PENCRANE - Noann LOSSER | 2023 | All right reserved &copy</span>
+            <span>Alexis PENCRANE - Noann LOSSER | 2023 | All right reserved &copy;</span>
         </div>
     </footer>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-        crossorigin="anonymous"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById("under-footer").style.height = document.getElementById("footer").offsetHeight + "px";
+    </script>
 </body>
+
 
 </html>

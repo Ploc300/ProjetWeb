@@ -108,6 +108,15 @@ function formulaireIndex(){
     echo "</div>";
 }
 
+function formulaireSuppression($id){
+    $note = getNoteById($id);
+    echo "<input type='hidden' name='id_sup' value='" . $id . "'>";
+    echo "<div class='g-recaptcha' data-sitekey='6Lcb66wmAAAAAIE9IxrfEHBw2GzI-N6xKcyuzYTp'></div>";
+    echo "<div class='form-group'>";
+    echo "<button type='submit' class='btn btn-dark'>supprimer</button>";
+    echo "</div>";
+}
+
 function formulaireChoixAdministation()
 {
     // Affiche le formulaire de choix de la page administration

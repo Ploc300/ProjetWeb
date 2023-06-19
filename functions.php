@@ -136,7 +136,7 @@ function afficheNotes($notes)
     $matieres = getMatieres();
     $types = getTypeNotes();
     echo '<table class="table table-light table-striped table-hover table-bordered border-dark-subtle table-sm"><thead><tr><th>Matière</th><th>Type</th><th>Note</th><th>Coefficient</th>';
-    if ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "suppression")) {
+    if ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "supression")) {
         echo '<th>Etudiant</th><th>Séléctionner</th>';
     }
     if ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "insertion") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "index")) {
@@ -150,8 +150,8 @@ function afficheNotes($notes)
                     if ($note['noNote'] == $type['NoNote']) {
                         if (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") {
                             echo '<tr><td><img src="' . getMatPicture($matiere['NomMat']) . '" title="' . $matiere['NomMat'] . '" alt="' . $matiere['NomMat'] . '" class="matiere-icon"> ' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>' . $note['login'] . '</td><td><a href="modification.php?id=' . $note['id'] . '"><img src="assets/icons/select.svg" alt="Séléctioner" class="select"></a></td></tr>';
-                        } elseif (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "suppression") {
-                            echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>' . $note['login'] . '</td><td><a href="suppression.php?id=' . $note['id'] . '"><img src="assets/icons/select.svg" alt="Séléctionner" class="select"></a></td></tr>';
+                        } elseif (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "supression") {
+                            echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>' . $note['login'] . '</td><td><a href="supression.php?id=' . $note['id'] . '"><img src="assets/icons/select.svg" alt="Séléctionner" class="select"></a></td></tr>';
                         } elseif ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "insertion") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "index")) {
                             echo '<tr><td>' . $matiere['NomMat'] . '</td><td>' . $type['NomNote'] . '</td><td>' . $note['note'] . '</td><td>' . $note['Coefficient'] . '</td><td>' . $note['login'] . '</td></tr>';
                         } else {
@@ -163,7 +163,7 @@ function afficheNotes($notes)
         }
     }
     echo '</tbody><tfoot class="table-group-divider"><tr><th>Matière</th><th>Type</th><th>Note</th><th>Coefficient</th>';
-    if ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "suppression")) {
+    if ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "modification") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "supression")) {
         echo '<th>Etudiant</th><th>Séléctioner</th>';
     }
     if ((strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "insertion") || (strtolower(explode('.', basename($_SERVER['PHP_SELF']))[0]) == "index")) {
@@ -466,6 +466,18 @@ function insertionNote($login, $matiere, $type, $note, $coefficient)
         echo "erreur de connection a la BDO";
     }
     return $resultat;
+}
+
+function supressionNote($id){
+    $resultat = false;
+    try {
+        $db = new PDO('sqlite:db/db.sqlite');
+        $rq = "DELETE FROM NotesMatieres WHERE id = '$id';";
+        $resultat = $db->exec($rq);
+    } catch (Exception $e) {
+        echo "erreur de connection a la BDO";
+    }
+    return $resultat; 
 }
 
 function ajoutCompte($login, $pass, $statut, $profilepicture)
