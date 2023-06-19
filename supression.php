@@ -70,6 +70,7 @@ noProfRedirect();
                 </div>
             </div>
             <?php
+            // Si une note a été sélectionnée afficher le formulaire de suppression
             if (isset($_GET['id'])) {
                 ?>
                 <form id="suppression" action="supression.php?action=sup" class="text-center p-3" method="post">
@@ -86,8 +87,12 @@ noProfRedirect();
                 $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($secretKey) . '&response=' . urlencode($_POST['g-recaptcha-response']);
                 $response = file_get_contents($url);
                 $responseKeys = json_decode($response, true);
+
+                //Vérification du captcha
                 if (($_GET['action'] == "sup" && ($responseKeys["success"]))) {
+                    //Vérification de la présence de l'id
                     if (isset($_POST['id_sup'])) {
+                        //Si la suppression à fonctionner : afficher un message de réussite sinon un message d'erreur
                         if (supressionNote($_POST['id_sup'])) {
                             echo "<div class='alert alert-success' role='alert'>La note a bien été supprimée</div>";
                         } else {
@@ -136,7 +141,7 @@ noProfRedirect();
             </form>
             <?php
 
-
+            // Affichage dynamique des notes en fonctions des paramètres de tri
             if (isset($_GET['login']) && isset($_GET['matiere']) && isset($_GET['type'])) {
                 $notes = getNotesByEtu(getNotesByMat(getNotesByType(getAllNotes(), $_GET['type']), $_GET['matiere']), $_GET['login']);
                 if (empty($notes)) {
@@ -144,7 +149,7 @@ noProfRedirect();
                 } else {
                     afficheNotes($notes);
                 }
-            } else {
+            } else { // Si aucun paramètre n'est donné afficher toutes les notes
                 afficheNotes(getAllNotes());
             }
             ?>

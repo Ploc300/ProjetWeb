@@ -66,13 +66,16 @@ noProfRedirect();
             </div>
             <form action="insertion.php?action=insert" class="text-center p-3" method="post">
                 <?php
+                //affiche le formulaire Insertion
                 formulaireInsertion();
                 ?>
             </form>
             <?php
             if (isset($_GET["action"])) {
                 if (($_GET['action'] == "insert")) {
+                    //Vérifie la présence de tous les paramètres
                     if (isset($_POST['login_insert']) && isset($_POST['matiere_insert']) && isset($_POST['type_insert']) && isset($_POST['note_insert']) && isset($_POST['coeff_insert'])) {
+                        //Si l'insertion à fonctionner : afficher un message de réussite et afficher toutes les notes sinon un message d'erreur
                         if (insertionNote($_POST['login_insert'], $_POST['matiere_insert'], $_POST['type_insert'], $_POST['coeff_insert'], $_POST['note_insert'])) {
                             echo "<div class='alert alert-success' role='alert'>La note a bien été insérée</div>";
                             afficheNotes(getAllNotes());

@@ -68,7 +68,7 @@ noSessionRedirect();
             // Recupere toutes les notes de l'etudiant et les affiche
             afficheNotes(getNotesByEtu(getAllNotes(), $_SESSION['uLogin']));
             echo "</div>";
-        } else { // Si session prof/admin affiche le nom de l'apli pour ne pas laisser de vide
+        } else { // Si session prof/admin affiche le formulaire Index
             ?>
             <form action="index.php?action=selection" class="text-center p-3" method="post">
                 <?php

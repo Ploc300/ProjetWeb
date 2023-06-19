@@ -235,11 +235,11 @@ function afficherLogs()
 
 function getLogin()
 {
+    // Fonction qui récupère le login de tous les comptes utilisateur
     $login = false;
     try {
-        // Connection to the database
         $db = new PDO('sqlite:db/db.sqlite');
-        $rq = "SELECT login,statut FROM Comptes where statut = 'utilisateur'";
+        $rq = "SELECT login FROM Comptes where statut = 'utilisateur'";
         $resultat = $db->query($rq);
         $login = $resultat->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
@@ -457,6 +457,7 @@ function modificationNote($id, $matiere, $type, $note, $coefficient)
 
 function insertionNote($login, $matiere, $type, $coefficient,$note)
 {
+    // Insert une note dans la base de données
     $resultat = false;
     try {
         $db = new PDO('sqlite:db/db.sqlite');
@@ -469,6 +470,8 @@ function insertionNote($login, $matiere, $type, $coefficient,$note)
 }
 
 function supressionNote($id){
+
+    // Supprime une note dans la base de données
     $resultat = false;
     try {
         $db = new PDO('sqlite:db/db.sqlite');

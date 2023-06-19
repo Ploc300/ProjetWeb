@@ -50,6 +50,7 @@ function FormulaireModification($id)
 
 function formulaireInsertion(){
 
+    // Affiche le formulaire d'insertion d'une note
     echo "<div class='form-group'>";
     echo "<input type='email' class='form-control' value='' name='login_insert' id='login_insert' placeholder='Login'>";
     echo "</div>";
@@ -80,6 +81,8 @@ function formulaireInsertion(){
 }
 
 function formulaireIndex(){
+
+    // Affiche le formulaire de séléction d'une note ou des notes
     echo "<div class='form-group'>";
     echo "<select class='form-control' name='login_index' id='login_index'>";
     echo "<option value='all' selected>Tous les logins</option>";
@@ -109,9 +112,13 @@ function formulaireIndex(){
 }
 
 function formulaireSuppression($id){
+
+    // Affiche le formulaire de suppression d'une note
     $note = getNoteById($id);
     echo "<input type='hidden' name='id_sup' value='" . $id . "'>";
-    echo "<div class='g-recaptcha' data-sitekey='6Lcb66wmAAAAAIE9IxrfEHBw2GzI-N6xKcyuzYTp'></div>";
+    echo "<div class='form-group'>";
+    echo "<div class='btn g-recaptcha' data-sitekey='6Lcb66wmAAAAAIE9IxrfEHBw2GzI-N6xKcyuzYTp'></div>";
+    echo "</div>";
     echo "<div class='form-group'>";
     echo "<button type='submit' class='btn btn-dark'>supprimer</button>";
     echo "</div>";
